@@ -1,0 +1,31 @@
+<template>
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <require from="styles/app.css"></require>
+  <require from="styles/menu-lateral.css"></require>
+  <require from="styles/home.css"></require>
+  <require from="components/menu-lateral.html"></require>
+  <!--<require from="components/cabecalho.html"></require>-->
+  <require from="components/loading.html"></require>
+  <require from="styles/loading.css"></require>
+
+  <loading class="loading" css = " display: ${display}"></loading>
+
+  <nav class="navbar navbar-light" style="background-color: #6495ED;">
+      <a class="navbar-brand mb-0 h1 text-white font-weight-bold" href="#">Elaine Kids</a>
+    <form class="form-inline">
+      <button class="btn btn-outline-light my-2 my-sm-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" click.delegate="clickSair()">Sair</button>
+    </form>
+  </nav>
+
+  <div class="row">
+    <div  class="col-sm-2 col-menulateral" id="menu-laretal">
+      <menu-lateral class="menu-lateral"></menu-laretal>
+    </div>
+    <div class="col-sm-10" id="conteudo">
+      <div class="row justify-content-center">
+        <router-view class="col-sm-10"></router-view>
+      </div>
+    </div>
+  </div>
+
+</template>

@@ -1,0 +1,42 @@
+<template>
+  <require from="bootstrap/css/bootstrap.css"></require>
+  <require from="styles/app.css"></require>
+  <require from="components/alert.html"></require>
+
+  <div class="container py-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="text-center text-white mb-4">Elaine Kids</h2>
+            <div class="row">
+                <div class="col-md-6 mx-auto">
+
+                  <div class = "alert alert-${statusAlert}" role="alert" css = "visibility:${visibilityAlert}">
+                      ${mensagemAlert}
+                      <!--<img src='src/img/load/loading.gif' height="30" width="30"/>-->
+                  </div>
+
+                    <div class="card rounded-0">
+                        <div class="card-header" style="background-color: #6495ED;">
+                            <h3 class="mb-0 text-white font-weight-bold">Login</h3>
+                        </div>
+                        <div class="card-body">
+                            <form class="form" role="form" autocomplete="off" id="formLogin" submit.trigger="clickLogin()">
+                                <div class="form-group">
+                                    <label for="login">Login</label>
+                                    <input type="text" class="form-control form-control-lg rounded-0" name="login" id="login" required="" value.bind="login">
+                                </div>
+                                <div class="form-group">
+                                    <label>Senha</label>
+                                    <input type="password" class="form-control form-control-lg rounded-0" id="senha" required="" autocomplete="new-password" value.bind="senha">
+                                </div>
+
+                                <button type="submit" class="btn btn-secondary btn-lg btn-block rounded-0">Logar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
