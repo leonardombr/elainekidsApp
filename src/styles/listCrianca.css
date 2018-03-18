@@ -1,0 +1,21 @@
+.format-table{
+  border-collapse:collapse;
+}
+.format-table td {
+	max-width: 20px;
+	max-height: 20px;
+	padding:10px;
+}
+.format-table th {
+	max-width: 20px;
+	max-height: 20px
+
+  ;
+	padding:10px;
+}
+.aling-left{
+  text-align: left;
+}
+.aling-right{
+  text-align: right;
+}
