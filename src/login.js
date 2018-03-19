@@ -25,7 +25,7 @@ export class Login {
 
         localStorage.setItem("usuario", valor);
         this.aurelia.setRoot('app');
-
+		<!--Teste-->
       }
     })
     .catch(error => {
