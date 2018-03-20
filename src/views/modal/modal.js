@@ -13,7 +13,12 @@ export class Prompt {
    }
 
    activate(message) {
-      this.message = 'Deseja ralmente excluir';
-      this.nome = message+'?';
+     if(message.cabecalho == false){
+        this.message = ' ';
+      }else{
+        console.log(message.cabecalho);
+        this.message = message.cabecalho;
+      }
+      this.nome = message.corpo+'?';
    }
 }

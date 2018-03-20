@@ -2,7 +2,7 @@ export class RestAPI {
 
     constructor(eventAggregator) {
         this.eventAggregator = eventAggregator;
-        this.url = 'http://192.168.0.106:8080/elainekidsAPI/rest';
+        this.url = 'http://10.1.70.181:8080/elainekidsAPI/rest';
     }
 
     configureHttpBasicUrl(http) {
