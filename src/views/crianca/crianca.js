@@ -57,6 +57,16 @@ export class Crianca {
     }
   }
 
+  resetForm(){
+    this.nomeCriaca = null;
+    this.nomeMae = null;
+    this.nomePai = null;
+    this.endereco = null;
+    this.idade = null;
+    this.sexo = null;
+    this.dtCriacao = null;
+  }
+
   clickCadCrianca(){
     let crianca = {
       "id":this.id,
@@ -78,16 +88,7 @@ export class Crianca {
       }else {
           let alert = {alert:true, statusAlert:'success', mensagemAlert:data.value};
           this.openAlert(alert);
-
-
-          this.nomeCriaca = null;
-          this.nomeMae = null;
-          this.nomePai = null;
-          this.endereco = null;
-          this.idade = null;
-          this.sexo = null;
-          this.dtCriacao = null;
-
+          this.resetForm();
           if(this.modoInclusao == true){
             this.router.navigateToRoute('listCrianca', {alert:true, statusAlert:'success', mensagemAlert:data.value}, {replace: false});
         }
