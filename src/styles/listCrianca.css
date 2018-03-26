@@ -8,10 +8,15 @@
 }
 .format-table th {
 	max-width: 20px;
-	max-height: 20px
-
-  ;
+	max-height: 20px;
 	padding:10px;
+}
+.format-table tr{
+  cursor: pointer;
+}
+.table-hover tbody tr:hover{
+  background-color: #6495ED;
+  color: #FFFFFF;
 }
 .aling-left{
   text-align: left;

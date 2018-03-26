@@ -18,7 +18,7 @@ export class App {
   }
 
   clickSair(){
-    this.dialogService.open({viewModel: Prompt, model:{"cabecalho":false,"corpo":"Deseja realmente sair"}})
+    this.dialogService.open({viewModel: Prompt, model:{"tipo":"sair"}})
     .whenClosed(response =>{
       if(!response.wasCancelled){
         localStorage.removeItem('usuario');
@@ -44,7 +44,6 @@ export class App {
     config.title = 'Elaine KIDS';
     config.map([
       {route: '', redirect:'home'},
-      {route: 'login', name: 'login', moduleId: 'login', nav: true, title:'Login'},
       {route: 'crianca', name: 'crianca', moduleId: './views/crianca/crianca', nav: true, title:'Crianças'},
       {route: 'listCrianca', name: 'listCrianca', moduleId: './views/crianca/listCrianca', nav: true},
       {route: 'foto', name: 'foto', moduleId: './views/fotos/foto', nav: true, title:'Foto'},

@@ -1,1 +1,11 @@
+*{
+  margin: 0;
+  padding: 0;
+}
 
+.margin-message{
+  margin: 11px 1px 0 1px;
+}
+.col-menulateral{
+  padding: 0;
+}

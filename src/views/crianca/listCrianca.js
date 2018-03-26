@@ -73,7 +73,7 @@ export class listCrianca {
   excluir(id, nome){
     this.id = id;
     this.nome = nome;
-    this.dialogService.open( {viewModel: Prompt, model:{"cabecalho":'Deseja ralmente excluir',"corpo":this.nome}}).whenClosed(response => {
+    this.dialogService.open( {viewModel: Prompt, model:{"tipo":"excluir","nome":this.nome}}).whenClosed(response => {
          if (!response.wasCancelled) {
            this.servico.excluirCrianca(this.id)
            .then(data => {
@@ -96,5 +96,8 @@ export class listCrianca {
 
   editar(crianca){
      this.router.navigateToRoute('crianca', { id:crianca.id }, {replace: false});
+  }
+  exibir(crianca){
+    this.dialogService.open({viewModel: Prompt, model:{"tipo":"exibir", "crianca":crianca}});
   }
 }

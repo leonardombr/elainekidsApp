@@ -1,0 +1,21 @@
+ux-dialog{
+  padding: 0;
+}
+ux-dialog > ux-dialog-header{
+  text-align: center;
+  color: #FFFFFF;
+  border-bottom: 0;
+  background-color: #1E90FF;
+  margin: 0;
+}
+ux-dialog > ux-dialog-body{
+  color: #1E90FF;
+}
+ux-dialog > ux-dialog-footer{
+  padding: 0 15px 0 15px;
+  border-top: 0;
+}
+ux-dialog-overlay.active {
+      background-color: black;
+      opacity: .5;
+    }
