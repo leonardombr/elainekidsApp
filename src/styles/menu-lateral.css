@@ -1,6 +1,11 @@
+.menu-lateral li a{
+  margin-left: 15px;
+}
+
 .menu-lateral li:hover{
   background-color: #6495ED;
+  width: 100%;
 }
 .menu-lateral li a:hover{
-color: #FFFFFF;
+  color: #FFFFFF;
 }

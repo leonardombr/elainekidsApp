@@ -1,21 +1,46 @@
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {Aurelia, inject}    from 'aurelia-framework';
+import {EventAggregator}  from 'aurelia-event-aggregator';
 import {Router} from 'aurelia-router';
 import {Servico}  from 'api/Servico';
 import {DialogService} from 'aurelia-dialog';
 import {Prompt} from 'views/modal/modal';
 
 
-@inject(Router, Aurelia, Servico, DialogService)
+@inject(Router, Aurelia, Servico, DialogService, EventAggregator)
 export class listCrianca {
-  constructor(Router, Aurelia, Servico, DialogService) {
+  constructor(Router, Aurelia, Servico, DialogService, EventAggregator) {
+    this.eventAggregator = EventAggregator;
     this.router = Router;
     this.servico = Servico;
     this.aurelia = Aurelia;
     this.dialogService = DialogService;
+    this.visibilityAlert = 'hidden';
+  }
+  activate(alert){
+    this.openAlert(alert);
   }
 
-  activate(){
+  attached(){
+    this.pesquisa();
+  }
+
+  closeAlert(){
+    this.mensagemAlert = '';
+    this.visibilityAlert = 'hidden';
+    this.statusAlert = '';
+  }
+
+  openAlert(alert){
+    if(alert.alert == "true" || alert.alert == true){
+      this.mensagemAlert = alert.mensagemAlert;
+      this.visibilityAlert = '';
+      this.statusAlert = alert.statusAlert;
+      new Promise((resolve, reject)=>{ setTimeout(_=>resolve(this.closeAlert()), 5000); });
+    }
+  }
+
+  pesquisa(){
     this.servico.listarCriancas()
     .then(data => {
       if(data.erro == true){
@@ -23,7 +48,10 @@ export class listCrianca {
         this.statusAlert = 'danger';
         this.mensagemAlert = data.mensagem;
       }else {
-        this.listCrianca =[];
+        if(data.value.length == 0){
+          let alert = {alert:true, statusAlert:'danger', mensagemAlert:'Nem um criança cadastrada!'}
+          this.openAlert(alert);
+        }
         this.listCrianca = data.value;
       }
     });
@@ -37,7 +65,6 @@ export class listCrianca {
         this.statusAlert = 'danger';
         this.mensagemAlert = data.mensagem;
       }else {
-        this.listCrianca =[];
         this.listCrianca = data.value;
       }
     });
@@ -46,14 +73,21 @@ export class listCrianca {
   excluir(id, nome){
     this.id = id;
     this.nome = nome;
-    this.dialogService.open( {viewModel: Prompt, model: this.nome}).whenClosed(response => {
+    this.dialogService.open( {viewModel: Prompt, model:{"tipo":"excluir","nome":this.nome}}).whenClosed(response => {
          if (!response.wasCancelled) {
            this.servico.excluirCrianca(this.id)
            .then(data => {
              if(data.erro == true){
                alert(data.error);
              }else {
-               location.reload();
+               for(var i = 0; this.listCrianca.length; i++){
+                 if(this.listCrianca[i].id === this.id){
+                   this.listCrianca.splice(i,1);
+                   break;
+                 }
+               };
+               let alert = {alert:true, statusAlert:'danger', mensagemAlert:data.value}
+               this.openAlert(alert);
              }
            });
          }
@@ -62,5 +96,8 @@ export class listCrianca {
 
   editar(crianca){
      this.router.navigateToRoute('crianca', { id:crianca.id }, {replace: false});
+  }
+  exibir(crianca){
+    this.dialogService.open({viewModel: Prompt, model:{"tipo":"exibir", "crianca":crianca}});
   }
 }

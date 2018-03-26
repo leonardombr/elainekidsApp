@@ -23,6 +23,11 @@ realizarLogin(login, senha){
     .then(response => response.json());
   }
 
+  countCrianca(){
+    return this.http.fetch('/home/inicial')
+    .then(response => response.json());
+  }
+
   searchChild(name){
     let pesquisa = {"nome":name}
     return this.http.fetch('/crianca/pesquisar',{

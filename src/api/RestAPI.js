@@ -26,7 +26,6 @@ export class RestAPI {
            response(response) {
 
             _this.eventAggregator.publish('handleModal', {options:{aberto:false,mensagem:'Carregando'} });
-           console.log('REspoNSE');
 
                return response;
            },

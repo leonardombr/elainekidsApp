@@ -1,63 +1,73 @@
 <template>
-      <div class = "top-espaco alert alert-${statusAlert}" role="alert" css = "visibility:${visibilityAlert}">
-          ${mensagemAlert}
-      </div>
+  <div class="row row margin-message">
+    <div class = "col-sm-12 col-md-12  alert alert-${statusAlert}" role="alert" css = "visibility:${visibilityAlert}">
+      ${mensagemAlert}
+      <button type="button" class="close" click.delegate="closeAlert()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
       <div class="card cad-crianca rounded-0">
-              <div class="card-header" style="background-color: #6495ED;">
-                <div class="row">
-                  <div class="col">
-                      <h5 class="mb-0 text-white font-weight-bold">Cadastro Criança</h5>
-                  </div>
-                  <div class="col">
-                    <a class="btn btn-outline-light my-2 my-sm-0 float-right rounded-0" href="#/listCrianca">Voltar</a>
+        <div class="card-header" style="background-color: #6495ED;">
+          <div class="row">
+            <div class="col">
+              <h5 class="mb-0 text-white font-weight-bold">Cadastro Criança</h5>
+            </div>
+            <div class="col">
+              <a class="btn btn-outline-light my-2 my-sm-0 float-right rounded-0" href="#/listCrianca">Voltar</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <form submit.trigger="clickCadCrianca()">
+            <div class="form-group">
+              <label for="nomeCriaca">Nome da Criança:</label>
+              <input type="text" class="form-control rounded-0" id="nomeCriaca" placeholder="Preencha o nome da criança."
+              required="" value.bind="nomeCriaca" maxlength="70" minlength="3" required="" title="O campo não pode conter números"/>
+            </div>
+            <div class="form-group">
+              <label for="nomeMae">Nome da Mãe:</label>
+              <input type="text" class="form-control rounded-0" id="nomeMae" placeholder="Preencha o nome da mãe."
+              required="" value.bind="nomeMae" maxlength="70" minlength="3"  required="" title="O campo não pode conter números"/>
+            </div>
+            <div class="form-group">
+              <label for="nomePai">Nome do Pai:</label>
+              <input type="text" class="form-control rounded-0" id="nomePai" placeholder="Preencha o nome do pai."
+              required="" value.bind="nomePai" maxlength="70" minlength="3"  required="" title="O campo não pode conter números"/>
+            </div>
+            <div class="form-group">
+              <label for="endereco">Endereço:</label>
+              <input type="text" class="form-control rounded-0" id="endereco" placeholder="Preencha o endereço."
+              required="" value.bind="endereco" maxlength="180" minlength="3"  required="" title="Endereço"/>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="idade">Idade:</label>
+                  <input type="text" class="form-control rounded-0" id="idade" placeholder="Preencha a idade."
+                  required="" value.bind="idade" maxlength="2" required="" pattern="[0-9]+$" title="Idade da criança"/>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group rounded-0">
+                  <label for="sexo">Sexo:</label>
+                  <select class="custom-select rounded-0" value.bind="sexo" required="">
+                    <option selected></selected>
+                      <option value="1">Masculino</option>
+                      <option value="2">Feminino</option>
+                    </select>
                   </div>
                 </div>
               </div>
-
-              <div class="card-body">
-                <form submit.trigger="clickCadCrianca()">
-                  <div class="form-group">
-                    <label for="nomeCriaca">Nome da Criança:</label>
-                    <input type="text" class="form-control rounded-0" id="nomeCriaca" placeholder="Preencha o nome da criança."
-                    required="" value.bind="nomeCriaca" maxlength="200" minlength="3" required="" title="O campo não pode conter números"/>
-                  </div>
-                  <div class="form-group">
-                    <label for="nomeMae">Nome da Mãe:</label>
-                    <input type="text" class="form-control rounded-0" id="nomeMae" placeholder="Preencha o nome da mãe."
-                    required="" value.bind="nomeMae" maxlength="200" minlength="3"  required="" title="O campo não pode conter números"/>
-                  </div>
-                  <div class="form-group">
-                    <label for="nomePai">Nome do Pai:</label>
-                    <input type="text" class="form-control rounded-0" id="nomePai" placeholder="Preencha o nome do pai."
-                    required="" value.bind="nomePai" maxlength="200" minlength="3"  required="" title="O campo não pode conter números"/>
-                  </div>
-                  <div class="form-group">
-                    <label for="endereco">Endereço:</label>
-                    <input type="text" class="form-control rounded-0" id="endereco" placeholder="Preencha o endereço."
-                    required="" value.bind="endereco" maxlength="200" minlength="3"  required="" title="Endereço"/>
-                  </div>
-                  <div class="row">
-                    <div class="col">
-                      <div class="form-group">
-                        <label for="idade">Idade:</label>
-                        <input type="text" class="form-control rounded-0" id="idade" placeholder="Preencha a idade."
-                        required="" value.bind="idade" maxlength="200" required="" pattern="[0-9]+$" title="Idade da criança"/>
-                      </div>
-                    </div>
-                    <div class="col">
-                      <div class="form-group rounded-0">
-                        <label for="sexo">Sexo:</label>
-                        <select class="custom-select rounded-0" value.bind="sexo">
-                          <option value="1">Masculino</option>
-                          <option value="2">Feminino</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <input type="hidden" id="id" value.bind="id"/>
-                  <input type="hidden" id="dtCriacao" value.bind="dtCriacao"/>
-                  <button type="submit" class="btn btn-secondary btn-lg rounded-0">Salvar</button>
-                </form>
-              </div>
-            </div>
-</template>
+              <input type="hidden" id="id" value.bind="id"/>
+              <input type="hidden" id="dtCriacao" value.bind="dtCriacao"/>
+              <button type="submit" class="btn btn-secondary btn-lg rounded-0">Salvar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>

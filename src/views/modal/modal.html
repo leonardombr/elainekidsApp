@@ -1,13 +1,33 @@
 <template>
-  <ux-dialog>
+  <ux-dialog class="rounded-0 modal-basic">
+    <ux-dialog-header>
+      <h3>${header}</h3>
+    </ux-dialog-header>
       <ux-dialog-body>
         <h3>${message}</h3>
+
         <h5>${nome}</h5>
+
+        <h5>${nomeMae}</h5>
+
+        <h5>${nomePai}</h5>
+
+        <h5>${idade}</h5>
+
+        <h5>${sexo}</h5>
+
+        <h5>${endereco}</h5>
       </ux-dialog-body>
 
       <ux-dialog-footer>
-        <button class="rounded-0 border btn btn-outline-primary" click.trigger = "controller.cancel()">Cancelar operação</button>
-        <button class="btn btn-danger rounded-0 border " click.trigger = "controller.ok(message)">Sim, excluir</button>
+        <div class="row">
+            <div class="col">
+              <button class="btn btn-lg btn-block btn-outline-primary rounded-0 border" css = "display:${visibilityBtn}" click.trigger = "controller.cancel()">Cancelar</button>
+            </div>
+            <div class="col">
+              <button class="btn btn-lg btn-block btn-danger rounded-0 border " css = "display:${visibilityBtn}" click.trigger = "controller.ok(message)">Sim</button>
+            </div>
+        </div>
       </ux-dialog-footer>
     </ux-dialog>
 </template>

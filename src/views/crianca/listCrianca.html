@@ -1,8 +1,15 @@
 <template>
 
-
-    <div class="row top-espaco">
-      <div class="col">
+    <div class="row margin-message">
+      <div class = "col-sm-12 col-md-12 alert alert-${statusAlert}" role="alert" css = "visibility:${visibilityAlert}">
+          ${mensagemAlert}
+        <button type="button" class="close" click.delegate="closeAlert()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6 col-md-6">
         <div class="input-group mb-3">
           <input type="text" class="form-control rounded-0 border border-primary" placeholder="Pesquisar criança" aria-label="Recipient's username" aria-describedby="basic-addon2"
           value.bind="search" maxlength="200">
@@ -11,34 +18,35 @@
           </div>
         </div>
       </div>
+      <!---->
       <div class="col">
         <a class="btn btn-outline-primary my-2 my-sm-0 float-right rounded-0" href="#/crianca">Cadastrar</a>
       </div>
     </div>
 
     <div class="table-responsive">
-      <table class="table table-striped rounded-0">
+      <table class="table table-striped table-hover rounded-0 format-table">
         <thead class="p-3 mb-2 bg-secondary text-white">
           <tr>
             <th scope="col">Nome</th>
             <th scope="col">Nome da mãe</th>
             <th scope="col">Nome do pai</th>
+            <th scope="col">Idade</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <tr repeat.for="crianca of listCrianca">
-            <td>${crianca.nome}</a></td>
-            <td>${crianca.nomeMae}</td>
-            <td>${crianca.nomePai}</td>
-            <td class="float-right">
+            <td click.delegate="exibir(crianca)">${crianca.nome}</td>
+            <td click.delegate="exibir(crianca)">${crianca.nomeMae}</td>
+            <td click.delegate="exibir(crianca)">${crianca.nomePai}</td>
+            <td click.delegate="exibir(crianca)">${crianca.idade}</td>
+            <td class="aling-right">
               <button type="button" class="btn btn-danger btn-sm rounded-0 border" click.delegate="excluir(crianca.id, crianca.nome)">Excluir</button> |
               <button type="button" class="btn btn-primary btn-sm rounded-0 border" click.delegate="editar(crianca)">Editar</button>
-
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-
 </template>

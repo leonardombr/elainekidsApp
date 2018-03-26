@@ -3,8 +3,9 @@
   <require from="styles/app.css"></require>
   <require from="styles/menu-lateral.css"></require>
   <require from="styles/home.css"></require>
+  <require from="styles/modal.css"></require>
+  <require from="styles/listCrianca.css"></require>
   <require from="components/menu-lateral.html"></require>
-  <!--<require from="components/cabecalho.html"></require>-->
   <require from="components/loading.html"></require>
   <require from="styles/loading.css"></require>
 
@@ -16,16 +17,16 @@
       <button class="btn btn-outline-light my-2 my-sm-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" click.delegate="clickSair()">Sair</button>
     </form>
   </nav>
-
+<div class="container-fluid">
   <div class="row">
-    <div  class="col-sm-2 col-menulateral" id="menu-laretal">
+    <div  class="col-sm-1 col-menulateral" id="menu-laretal">
       <menu-lateral class="menu-lateral"></menu-laretal>
     </div>
-    <div class="col-sm-10" id="conteudo">
+    <div class="col-sm-11" id="conteudo">
       <div class="row justify-content-center">
-        <router-view class="col-sm-10"></router-view>
+        <router-view class="col-sm-11"></router-view>
       </div>
     </div>
   </div>
-
+</div>
 </template>

@@ -1,12 +1,16 @@
 import 'bootstrap';
 import {Aurelia, inject}  from 'aurelia-framework';
 import {EventAggregator}  from 'aurelia-event-aggregator';
+import {DialogService} from 'aurelia-dialog';
+import {Prompt} from 'views/modal/modal';
 
 
-@inject(EventAggregator)
+@inject(EventAggregator, DialogService)
 export class App {
-  constructor(EventAggregator) {
+  constructor(EventAggregator, DialogService, Aurelia) {
     this.eventAggregator = EventAggregator;
+    this.dialogService = DialogService;
+    this.Aurelia = Aurelia;
     this.display = 'none';
     this.subscribeOpenModal = this.eventAggregator.subscribe('handleModal', response =>{
       this.handleModal(response);
@@ -14,8 +18,13 @@ export class App {
   }
 
   clickSair(){
-    localStorage.removeItem('usuario');
-    location.reload();
+    this.dialogService.open({viewModel: Prompt, model:{"tipo":"sair"}})
+    .whenClosed(response =>{
+      if(!response.wasCancelled){
+        localStorage.removeItem('usuario');
+        location.reload();
+      }
+    });
   }
 
   handleModal(response){
