@@ -80,13 +80,13 @@ export class Crianca {
           this.openAlert(alert);
 
 
-          this.nomeCriaca = '';
-          this.nomeMae = '';
-          this.nomePai = '';
-          this.endereco = '';
-          this.idade = '';
-          this.sexo = '';
-          this.dtCriacao = '';
+          this.nomeCriaca = null;
+          this.nomeMae = null;
+          this.nomePai = null;
+          this.endereco = null;
+          this.idade = null;
+          this.sexo = null;
+          this.dtCriacao = null;
 
           if(this.modoInclusao == true){
             this.router.navigateToRoute('listCrianca', {alert:true, statusAlert:'success', mensagemAlert:data.value}, {replace: false});
