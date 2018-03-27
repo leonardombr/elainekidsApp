@@ -1,14 +1,14 @@
 import {HttpClient, json} from 'aurelia-fetch-client';
 import {Aurelia, inject}    from 'aurelia-framework';
-import {Servico}  from 'api/Servico';
 import {Router} from 'aurelia-router';
+import {criancaService} from 'api/services/criancaService'
 
-@inject(Router, Aurelia, Servico)
+@inject(Router, Aurelia, criancaService)
 export class Crianca {
-  constructor(Router, Aurelia, Servico, eventAggregator) {
+  constructor(Router, Aurelia, criancaService) {
     this.router = Router;
     this.aurelia = Aurelia;
-    this.servico = Servico;
+    this.criancaService = criancaService;
     this.visibilityAlert = 'hidden';
     this.modoInclusao = false;
   }
@@ -17,7 +17,7 @@ export class Crianca {
     this.modoInclusao = idCrianca.id != undefined ? true : false;
     this.id = idCrianca.id;
     if(this.id != undefined){
-      this.servico.buscarCrianca(this.id)
+      this.criancaService.buscarCrianca(this.id)
       .then(data =>{
         if(data.erro == true){
             this.visibilityAlert = 'visible';
@@ -79,7 +79,7 @@ export class Crianca {
       "dtCriacao":this.dtCriacao
     }
 
-    this.servico.salvarCrianca(crianca)
+    this.criancaService.salvarCrianca(crianca)
     .then(data =>{
       if(data.erro == true){
           this.visibilityAlert = 'visible';

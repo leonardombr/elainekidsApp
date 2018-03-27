@@ -4,11 +4,10 @@ import {EventAggregator}    from 'aurelia-event-aggregator';
 import {RestAPI}            from 'api/RestAPI';
 
 @inject(HttpClient, EventAggregator)
-export class Servico  extends RestAPI {
-
-  constructor(http, eventAggregator) {
-      super(eventAggregator);
-      this.http = this.configureHttpBasicUrl(http);
+export class criancaService extends RestAPI {
+  constructor(http, EventAggregator) {
+    super(EventAggregator);
+    this.http = this.configureHttpBasicUrl(http);
   }
 
   listarCriancas(){
@@ -47,4 +46,5 @@ export class Servico  extends RestAPI {
       body: JSON.stringify(crianca)
     }).then(response => response.json());
   }
+
 }

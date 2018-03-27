@@ -71,7 +71,7 @@ define('environment',["exports"], function (exports) {
     testing: true
   };
 });
-define('login',['exports', 'aurelia-fetch-client', 'aurelia-framework', 'aurelia-event-aggregator', 'api/Servico'], function (exports, _aureliaFetchClient, _aureliaFramework, _aureliaEventAggregator, _Servico) {
+define('login',['exports', 'aurelia-framework', 'api/services/loginService'], function (exports, _aureliaFramework, _loginService) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -87,11 +87,11 @@ define('login',['exports', 'aurelia-fetch-client', 'aurelia-framework', 'aurelia
 
   var _dec, _class;
 
-  var Login = exports.Login = (_dec = (0, _aureliaFramework.inject)(_aureliaFramework.Aurelia, _Servico.Servico), _dec(_class = function () {
-    function Login(aurelia, Servico) {
+  var Login = exports.Login = (_dec = (0, _aureliaFramework.inject)(_aureliaFramework.Aurelia, _loginService.loginService), _dec(_class = function () {
+    function Login(aurelia, loginService) {
       _classCallCheck(this, Login);
 
-      this.servico = Servico;
+      this.loginService = loginService;
       this.aurelia = aurelia;
       this.mensagemAlert = '';
       this.visibilityAlert = 'hidden';
@@ -101,18 +101,17 @@ define('login',['exports', 'aurelia-fetch-client', 'aurelia-framework', 'aurelia
     Login.prototype.clickLogin = function clickLogin() {
       var _this = this;
 
-      this.servico.realizarLogin(this.login, this.senha).then(function (data) {
+      this.loginService.realizarLogin(this.login, this.senha).then(function (data) {
         if (data.erro == true) {
           _this.visibilityAlert = 'visible';
           _this.statusAlert = 'danger';
           _this.mensagemAlert = data.mensagem;
         } else {
           var valor = JSON.stringify(data.value.login);
-
           localStorage.setItem("usuario", valor);
           _this.aurelia.setRoot('app');
         }
-      }).catch(function (error) {});
+      });
     };
 
     return Login;
@@ -152,96 +151,6 @@ define('main',['exports', './environment'], function (exports, _environment) {
       }
     });
   }
-});
-define('api/BasicAPI',['exports', 'aurelia-framework', 'environment'], function (exports, _aureliaFramework, _environment) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.BasicAPI = undefined;
-
-  var _environment2 = _interopRequireDefault(_environment);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _dec, _class;
-
-  var BasicAPI = exports.BasicAPI = (_dec = (0, _aureliaFramework.transient)(), _dec(_class = function () {
-    function BasicAPI(eventAggregator) {
-      _classCallCheck(this, BasicAPI);
-
-      this.eventAggregator = eventAggregator;
-      this.baseAddress = _environment2.default.endPoint;
-    }
-
-    BasicAPI.prototype.configureHttp = function configureHttp(http) {
-      var _this = this;
-
-      http.configure(function (config) {
-        config.useStandardConfiguration().withInterceptor({
-          request: function request(_request) {
-            return _request;
-          },
-          response: function response(_response) {
-            return _response;
-          }
-        }).withDefaults({
-          credentials: 'include',
-          headers: {
-            'Content-type': 'application/json'
-          }
-        }).withBaseUrl(_this.baseAddress);
-      });
-      return http;
-    };
-
-    BasicAPI.prototype.getResponse = function getResponse(response, property) {
-      if (response && response != null && response.status && (response.status.code == 0 || response.status && response.status == 200)) {
-        return property ? response[property] : response;
-      } else {
-        this.trowError(response);
-      }
-    };
-
-    BasicAPI.prototype.trowError = function trowError(error) {
-      if (error.status && error.status != null && error.status.code != null) {
-        var code = error.status.code;
-        var message = error.status.message && error.status.message != '' ? error.status.message : null;
-        if (code == 2) this.eventAggregator.publish('usuario_desconectado');
-        throw { code: code, message: message };
-      } else {
-        throw { code: 3, message: 'Uncaught error' };
-      }
-    };
-
-    BasicAPI.prototype.translateError = function translateError(error) {
-      if (error.body && error.status && error.status == 500) {
-        console.log('server error : ', error);
-        return { code: 3, message: 'serverError' };
-      }
-
-      if (error.code && error.code > 0) {
-
-        if (error.code == 3) {
-          error.message = 'erroInesperado';
-        }
-      }
-      return error;
-    };
-
-    return BasicAPI;
-  }()) || _class);
 });
 define('api/RestAPI',['exports'], function (exports) {
   'use strict';
@@ -359,16 +268,6 @@ define('api/Servico',['exports', 'aurelia-fetch-client', 'aurelia-framework', 'a
       return _this;
     }
 
-    Servico.prototype.realizarLogin = function realizarLogin(login, senha) {
-      var usuario = { "login": login, "senha": senha };
-      return this.http.fetch('/login/efetuarLogin', {
-        method: 'POST',
-        body: JSON.stringify(usuario)
-      }).then(function (response) {
-        return response.json();
-      });
-    };
-
     Servico.prototype.listarCriancas = function listarCriancas() {
       return this.http.fetch('/crianca/listar').then(function (response) {
         return response.json();
@@ -451,7 +350,72 @@ define('resources/index',["exports"], function (exports) {
   exports.configure = configure;
   function configure(config) {}
 });
-define('views/crianca/crianca',['exports', 'aurelia-fetch-client', 'aurelia-framework', 'api/Servico', 'aurelia-router'], function (exports, _aureliaFetchClient, _aureliaFramework, _Servico, _aureliaRouter) {
+define('api/services/loginService',['exports', 'aurelia-fetch-client', 'aurelia-framework', 'aurelia-event-aggregator', 'api/RestAPI'], function (exports, _aureliaFetchClient, _aureliaFramework, _aureliaEventAggregator, _RestAPI2) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.loginService = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  var _dec, _class;
+
+  var loginService = exports.loginService = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient, _aureliaEventAggregator.EventAggregator), _dec(_class = function (_RestAPI) {
+    _inherits(loginService, _RestAPI);
+
+    function loginService(http, eventAggregator) {
+      _classCallCheck(this, loginService);
+
+      var _this = _possibleConstructorReturn(this, _RestAPI.call(this, eventAggregator));
+
+      _this.http = _this.configureHttpBasicUrl(http);
+      return _this;
+    }
+
+    loginService.prototype.realizarLogin = function realizarLogin(login, senha) {
+      var usuario = { "login": login, "senha": senha };
+      return this.http.fetch('/login/efetuarLogin', {
+        method: 'POST',
+        body: JSON.stringify(usuario)
+      }).then(function (response) {
+        return response.json();
+      });
+    };
+
+    return loginService;
+  }(_RestAPI2.RestAPI)) || _class);
+});
+define('views/crianca/crianca',['exports', 'aurelia-fetch-client', 'aurelia-framework', 'aurelia-router', 'api/services/criancaService'], function (exports, _aureliaFetchClient, _aureliaFramework, _aureliaRouter, _criancaService) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -467,13 +431,13 @@ define('views/crianca/crianca',['exports', 'aurelia-fetch-client', 'aurelia-fram
 
   var _dec, _class;
 
-  var Crianca = exports.Crianca = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaFramework.Aurelia, _Servico.Servico), _dec(_class = function () {
-    function Crianca(Router, Aurelia, Servico, eventAggregator) {
+  var Crianca = exports.Crianca = (_dec = (0, _aureliaFramework.inject)(_aureliaRouter.Router, _aureliaFramework.Aurelia, _criancaService.criancaService), _dec(_class = function () {
+    function Crianca(Router, Aurelia, criancaService) {
       _classCallCheck(this, Crianca);
 
       this.router = Router;
       this.aurelia = Aurelia;
-      this.servico = Servico;
+      this.criancaService = criancaService;
       this.visibilityAlert = 'hidden';
       this.modoInclusao = false;
     }
@@ -484,7 +448,7 @@ define('views/crianca/crianca',['exports', 'aurelia-fetch-client', 'aurelia-fram
       this.modoInclusao = idCrianca.id != undefined ? true : false;
       this.id = idCrianca.id;
       if (this.id != undefined) {
-        this.servico.buscarCrianca(this.id).then(function (data) {
+        this.criancaService.buscarCrianca(this.id).then(function (data) {
           if (data.erro == true) {
             _this.visibilityAlert = 'visible';
             _this.statusAlert = 'danger';
@@ -552,7 +516,7 @@ define('views/crianca/crianca',['exports', 'aurelia-fetch-client', 'aurelia-fram
         "dtCriacao": this.dtCriacao
       };
 
-      this.servico.salvarCrianca(crianca).then(function (data) {
+      this.criancaService.salvarCrianca(crianca).then(function (data) {
         if (data.erro == true) {
           _this3.visibilityAlert = 'visible';
           _this3.statusAlert = 'danger';
@@ -846,6 +810,106 @@ define('views/usuario/usuario',["exports"], function (exports) {
   var usuario = exports.usuario = function usuario() {
     _classCallCheck(this, usuario);
   };
+});
+define('api/services/criancaService',['exports', 'aurelia-fetch-client', 'aurelia-framework', 'aurelia-event-aggregator', 'api/RestAPI'], function (exports, _aureliaFetchClient, _aureliaFramework, _aureliaEventAggregator, _RestAPI2) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.criancaService = undefined;
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  function _possibleConstructorReturn(self, call) {
+    if (!self) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return call && (typeof call === "object" || typeof call === "function") ? call : self;
+  }
+
+  function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+      throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+    }
+
+    subClass.prototype = Object.create(superClass && superClass.prototype, {
+      constructor: {
+        value: subClass,
+        enumerable: false,
+        writable: true,
+        configurable: true
+      }
+    });
+    if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  }
+
+  var _dec, _class;
+
+  var criancaService = exports.criancaService = (_dec = (0, _aureliaFramework.inject)(_aureliaFetchClient.HttpClient, _aureliaEventAggregator.EventAggregator), _dec(_class = function (_RestAPI) {
+    _inherits(criancaService, _RestAPI);
+
+    function criancaService(http, EventAggregator) {
+      _classCallCheck(this, criancaService);
+
+      var _this = _possibleConstructorReturn(this, _RestAPI.call(this, EventAggregator));
+
+      _this.http = _this.configureHttpBasicUrl(http);
+      return _this;
+    }
+
+    criancaService.prototype.listarCriancas = function listarCriancas() {
+      return this.http.fetch('/crianca/listar').then(function (response) {
+        return response.json();
+      });
+    };
+
+    criancaService.prototype.countCrianca = function countCrianca() {
+      return this.http.fetch('/home/inicial').then(function (response) {
+        return response.json();
+      });
+    };
+
+    criancaService.prototype.searchChild = function searchChild(name) {
+      var pesquisa = { "nome": name };
+      return this.http.fetch('/crianca/pesquisar', {
+        method: 'POST',
+        body: JSON.stringify(pesquisa)
+      }).then(function (response) {
+        return response.json();
+      });
+    };
+
+    criancaService.prototype.excluirCrianca = function excluirCrianca(id) {
+      this.id = id;
+      return this.http.fetch('/crianca/excluir/' + this.id).then(function (response) {
+        return response.json();
+      });
+    };
+
+    criancaService.prototype.buscarCrianca = function buscarCrianca(id) {
+      this.id = id;
+      return this.http.fetch('/crianca/buscar/' + this.id).then(function (response) {
+        return response.json();
+      });
+    };
+
+    criancaService.prototype.salvarCrianca = function salvarCrianca(crianca) {
+      return this.http.fetch('/crianca/salvar', {
+        method: 'POST',
+        body: JSON.stringify(crianca)
+      }).then(function (response) {
+        return response.json();
+      });
+    };
+
+    return criancaService;
+  }(_RestAPI2.RestAPI)) || _class);
 });
 define('text!app.html', ['module'], function(module) { module.exports = "<template><require from=\"bootstrap/css/bootstrap.css\"></require><require from=\"styles/app.css\"></require><require from=\"styles/menu-lateral.css\"></require><require from=\"styles/home.css\"></require><require from=\"styles/modal.css\"></require><require from=\"styles/listCrianca.css\"></require><require from=\"components/menu-lateral.html\"></require><require from=\"components/loading.html\"></require><require from=\"styles/loading.css\"></require><loading class=\"loading\" css=\" display: ${display}\"></loading><nav class=\"navbar navbar-light\" style=\"background-color:#6495ed\"><a class=\"navbar-brand mb-0 h1 text-white font-weight-bold\" href=\"#\">Elaine Kids</a><form class=\"form-inline\"><button class=\"btn btn-outline-light my-2 my-sm-0\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarSupportedContent\" aria-controls=\"navbarSupportedContent\" aria-expanded=\"false\" aria-label=\"Toggle navigation\" click.delegate=\"clickSair()\">Sair</button></form></nav><div class=\"container-fluid\"><div class=\"row\"><div class=\"col-sm-1 col-menulateral\" id=\"menu-laretal\"><menu-lateral class=\"menu-lateral\"></menu-lateral></div><div class=\"col-sm-11\" id=\"conteudo\"><div class=\"row justify-content-center\"><router-view class=\"col-sm-11\"></router-view></div></div></div></div></template>"; });
 define('text!styles/app.css', ['module'], function(module) { module.exports = "*{\r\n  margin: 0;\r\n  padding: 0;\r\n}\r\n\r\n.margin-message{\r\n  margin: 11px 1px 0 1px;\r\n}\r\n.col-menulateral{\r\n  padding: 0;\r\n}\r\n"; });
