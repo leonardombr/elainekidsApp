@@ -1,18 +1,17 @@
-import {HttpClient, json} from 'aurelia-fetch-client';
 import {Aurelia, inject}    from 'aurelia-framework';
 import {EventAggregator}  from 'aurelia-event-aggregator';
 import {Router} from 'aurelia-router';
-import {Servico}  from 'api/Servico';
+import {criancaService} from 'api/services/criancaService'
 import {DialogService} from 'aurelia-dialog';
 import {Prompt} from 'views/modal/modal';
 
 
-@inject(Router, Aurelia, Servico, DialogService, EventAggregator)
+@inject(Router, Aurelia, criancaService, DialogService, EventAggregator)
 export class listCrianca {
-  constructor(Router, Aurelia, Servico, DialogService, EventAggregator) {
+  constructor(Router, Aurelia, criancaService, DialogService, EventAggregator) {
     this.eventAggregator = EventAggregator;
     this.router = Router;
-    this.servico = Servico;
+    this.criancaService = criancaService;
     this.aurelia = Aurelia;
     this.dialogService = DialogService;
     this.visibilityAlert = 'hidden';
@@ -41,7 +40,7 @@ export class listCrianca {
   }
 
   pesquisa(){
-    this.servico.listarCriancas()
+    this.criancaService.listarCriancas()
     .then(data => {
       if(data.erro == true){
         this.visibilityAlert = 'visible';
@@ -58,7 +57,7 @@ export class listCrianca {
   }
 
   searchChild(){
-    this.servico.searchChild(this.search)
+    this.criancaService.searchChild(this.search)
     .then(data => {
       if(data.erro == true){
         this.visibilityAlert = 'visible';
@@ -75,7 +74,7 @@ export class listCrianca {
     this.nome = nome;
     this.dialogService.open( {viewModel: Prompt, model:{"tipo":"excluir","nome":this.nome}}).whenClosed(response => {
          if (!response.wasCancelled) {
-           this.servico.excluirCrianca(this.id)
+           this.criancaService.excluirCrianca(this.id)
            .then(data => {
              if(data.erro == true){
                alert(data.error);
