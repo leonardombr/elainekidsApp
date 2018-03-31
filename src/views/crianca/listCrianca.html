@@ -14,7 +14,7 @@
           <input type="text" class="form-control rounded-0 border border-primary" placeholder="Pesquisar criança" aria-label="Recipient's username" aria-describedby="basic-addon2"
           value.bind="search" maxlength="200">
           <div class="input-group-append">
-            <button class="btn btn-outline-primary rounded-0" type="button" click.delegate="searchChild()">Pesquisar</button>
+            <button class="btn btn-outline-primary rounded-0" type="button" title="Editar" click.delegate="searchChild()"><i class="fas fa-search"></i> Pesquisar</button>
           </div>
         </div>
       </div>
@@ -42,8 +42,8 @@
             <td click.delegate="exibir(crianca)">${crianca.nomePai}</td>
             <td click.delegate="exibir(crianca)">${crianca.idade}</td>
             <td class="aling-right">
-              <button type="button" class="btn btn-danger btn-sm rounded-0 border" click.delegate="excluir(crianca.id, crianca.nome)">Excluir</button> |
-              <button type="button" class="btn btn-primary btn-sm rounded-0 border" click.delegate="editar(crianca)">Editar</button>
+              <a click.delegate="excluir(crianca.id, crianca.nome)"><i class="fas fa-trash" title="Excluir"></i></a>
+              <a  click.delegate="editar(crianca)"><i class="fas fa-pencil-alt" title="Editar"></i></a>
             </td>
           </tr>
         </tbody>

@@ -6,6 +6,10 @@
 	max-height: 20px;
 	padding:10px;
 }
+.format-table td a{
+  cursor: pointer;
+  margin: 0 0.4rem;
+}
 .format-table th {
 	max-width: 20px;
 	max-height: 20px;
