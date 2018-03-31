@@ -9,3 +9,13 @@
 .col-menulateral{
   padding: 0;
 }
+.navbar{
+  padding: 0.5rem 4rem 0.5rem 1rem;
+}
+
+.dropdown-menu{
+  min-width: 0;
+}
+.dropdown-menu a{
+  cursor: pointer;
+}
