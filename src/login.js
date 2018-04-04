@@ -19,7 +19,7 @@ export class Login {
           this.statusAlert = 'danger';
           this.mensagemAlert = data.mensagem;
       }else{
-        let valor = JSON.stringify(data.value.login);
+        let valor = data.value.nome;
         localStorage.setItem("usuario", valor);
         this.aurelia.setRoot('app');
       }

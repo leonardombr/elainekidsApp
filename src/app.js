@@ -12,6 +12,7 @@ export class App {
     this.dialogService = DialogService;
     this.Aurelia = Aurelia;
     this.display = 'none';
+    this.usuario = JSON.parse(localStorage.getItem('usuario'));
     this.subscribeOpenModal = this.eventAggregator.subscribe('handleModal', response =>{
       this.handleModal(response);
     });
