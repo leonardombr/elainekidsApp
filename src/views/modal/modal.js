@@ -35,6 +35,8 @@ export class Prompt {
           this.controller.settings.lock = false;
           this.visibilityBtn = "none";
           break;
+        case "meusDados":
+          break;
        default:
             this.message = "Modal indefinido!";
      }

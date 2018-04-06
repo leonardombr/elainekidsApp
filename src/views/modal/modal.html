@@ -3,31 +3,43 @@
     <ux-dialog-header>
       <h3>${header}</h3>
     </ux-dialog-header>
-      <ux-dialog-body>
-        <h3>${message}</h3>
+    <ux-dialog-body>
+      <h3>${message}</h3>
+      <h5>${nome}</h5>
+      <h5>${nomeMae}</h5>
+      <h5>${nomePai}</h5>
+      <h5>${idade}</h5>
+      <h5>${sexo}</h5>
+      <h5>${endereco}</h5>
 
-        <h5>${nome}</h5>
-
-        <h5>${nomeMae}</h5>
-
-        <h5>${nomePai}</h5>
-
-        <h5>${idade}</h5>
-
-        <h5>${sexo}</h5>
-
-        <h5>${endereco}</h5>
-      </ux-dialog-body>
-
-      <ux-dialog-footer>
-        <div class="row">
-            <div class="col">
-              <button class="btn btn-lg btn-block btn-outline-primary rounded-0 border" css = "display:${visibilityBtn}" click.trigger = "controller.cancel()">Cancelar</button>
-            </div>
-            <div class="col">
-              <button class="btn btn-lg btn-block btn-danger rounded-0 border " css = "display:${visibilityBtn}" click.trigger = "controller.ok(message)">Sim</button>
-            </div>
+      <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
-      </ux-dialog-footer>
-    </ux-dialog>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        </div>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+    </ux-dialog-body>
+
+    <ux-dialog-footer>
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-lg btn-block btn-outline-primary rounded-0 border" css = "display:${visibilityBtn}" click.trigger = "controller.cancel()">Cancelar</button>
+        </div>
+        <div class="col">
+          <button class="btn btn-lg btn-block btn-danger rounded-0 border " css = "display:${visibilityBtn}" click.trigger = "controller.ok(message)">Sim</button>
+        </div>
+      </div>
+    </ux-dialog-footer>
+  </ux-dialog>
 </template>

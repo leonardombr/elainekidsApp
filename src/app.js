@@ -28,6 +28,10 @@ export class App {
     });
   }
 
+  clickMeusDados(){
+    this.dialogService.open({viewModel: Prompt, model:{"tipo":"meusDados"}});
+  }
+
   handleModal(response){
     //modal.mensamge=  response.options.mensagem;
     if (response.options.aberto == true) {
